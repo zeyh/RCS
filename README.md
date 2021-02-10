@@ -2,13 +2,13 @@
 
 ## Table of Contents
 
-- [Overview](#about)
-- [Accessing OnDemand](#getting_started)
-- [File Management](#usage)
-- [Job Management](#usage)
-- [Accessing Comman-line Shell](#usage)
+- [Overview](#overview)
+- [Accessing OnDemand](#accessing_ondemand)
+- [File Management](#file_management)
+- [Job Management](#job_management)
+- [Accessing Comman-line Shell](#accessing_shell)
   
-## Overview <a name = "about"></a>
+## Overview <a name = "overview"></a>
 
 [OnDemand](https://qondemand.ci.northwestern.edu/) provides web access for the university's high performance computing(HPC) systems [QUEST](https://www.it.northwestern.edu/research/user-services/quest/index.html). By opening a web browser, OnDemand users have the oppotunity to:
 
@@ -16,14 +16,14 @@
 - Compose and monitor jobs on Quest: create, edit, submit jobs with templates and script editors
 - Access command-line shell
 
-## Accessing OnDemand  <a name = "getting_started"></a>
+## Accessing OnDemand  <a name = "accessing_ondemand"></a>
 Please make sure you have a valid Quest account, otherwise, computational time on the Quest cluster can be requested [here](https://www.it.northwestern.edu/secure/forms/research/allocation-request.html).
-To connect to OnDemand, open a browser and visit https://qondemand.ci.northwestern.edu/. For unmanaged university computers or home computers, please make sure you are connected to a [Northwestern VPN](https://www.it.northwestern.edu/offcampus/). A popup window would ask for your username and password.
-**Hostname** : qondemand.ci.northwestern.edu
-**Username** : your Northwestern NetID (all lowercase letters)
-**Password** : your Northwestern NetID password
+To connect to OnDemand, open a browser and visit https://qondemand.ci.northwestern.edu/. For unmanaged university computers or home computers, please make sure you are connected to a [Northwestern VPN](https://www.it.northwestern.edu/offcampus/). A popup window would ask for your username and password.\
+**Hostname** : qondemand.ci.northwestern.edu\
+**Username** : your Northwestern NetID (all lowercase letters)\
+**Password** : your Northwestern NetID password\
 
-![Sign In Popup Window](signin.png)
+![Sign In Popup Window](images/signin.png)
 
 ### Browser Requirements
 
@@ -34,13 +34,17 @@ Also, please make sure that your browser's pop-up blocker isn't preventing the s
 
 ---
 
-## File Management
+## File Management  <a name = "file_management"></a>
 
 Once you've logged into OnDemand, by clicking "Files" &#8594; "Home Directory" in the main menu, you will be directed to the file explorer page. By default, you will be viewing your home directory on Quest: ```/home/<NetID>```. The home directory has 80GB of storage and is backed up nightly. Backups are kept for two weeks.
+
+![File Explorer](images/file_navigation.png)
 
 ### Navigating
 
 The file explorer provides many options to go to your files and file management. You can navigate the folders similarly to a desktop GUI. Your **current directory** is located on the near top of the browsing window.
+
+![Current Directory](images/current_directory.png)
 
 **Switching folders:**
 
@@ -85,9 +89,11 @@ To view file owner or mode, please select the checkbox named "Show Owner/Mode" o
 
 --- 
 
-## Job Management
+## Job Management <a name = "job_management"></a>
 
 OnDemand provides graphical user interface so that you can create new Quest jobs as well as manage and view existing jobs all in one browser. To navigate to job management page, please select "Jobs" in dashboard's main menu, and choose either "Active Jobs" to view existing jobs or "Job Composer" to create a new job.
+
+![Job Management](images/job_navigation.png)
 
 TODO: 👇
 **Creating a new Quest job**
@@ -108,7 +114,7 @@ Submit the job and monitor the progress from the "Job Composer" index page.
 
 --- 
 
-## Accessing Command-line Shell
+## Accessing Command-line Shell <a name = "accessing_shell"></a>
 
 Without openning a terminal window, you can open  Quest S shell via OnDemand, which is equivalent to [connecting with an SSH terminal](https://kb.northwestern.edu/quest-login) with the following ways.
 
@@ -128,5 +134,4 @@ Without openning a terminal window, you can open  Quest S shell via OnDemand, wh
 
 https://openondemand.org/
 https://www.osc.edu/resources/online_portals/ondemand
-
-
+https://kb.northwestern.edu/page.php?id=70716
