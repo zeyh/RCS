@@ -1,75 +1,132 @@
-
-under construction...
-
-## just some scratch...
-
-login with quest cluster (apply link)
-
-provides web based file explore:
-  file management: upload/download/move/edit/delete...
-
-Jobs: 
-Steps to create a job:
-Create a new job by copying from an existing job template directory or a previously run job directory.
-Edit the files in the job via the file explorer.
-Submit the job and monitor the progress from the "Job Composer" index page.
-
-1. Create: Begin by creating a new job from an existing template, from any arbitrary path on the file system, or by copying a job you have already created through the Job Composer.
-2. Edit: Select a job and click here to open the path in the file explorer so you can edit the job's files.
-
-shell: -
-
-
-#### reference
-https://www.osc.edu/resources/online_portals/ondemand
-https://openondemand.org/
-
----
 # OnDemand
 
 ## Table of Contents
 
-- [About](#about)
-- [Getting Started](#getting_started)
-- [Usage](#usage)
-- [Contributing](../CONTRIBUTING.md)
+- [Overview](#about)
+- [Accessing OnDemand](#getting_started)
+- [File Management](#usage)
+- [Job Management](#usage)
+- [Accessing Comman-line Shell](#usage)
+  
+## Overview <a name = "about"></a>
+
+[OnDemand](https://qondemand.ci.northwestern.edu/) provides web access for the university's high performance computing(HPC) systems [QUEST](https://www.it.northwestern.edu/research/user-services/quest/index.html). By opening a web browser, OnDemand users have the oppotunity to:
+
+- Manage files on Quest: upload, download, view, edit files and folders
+- Compose and monitor jobs on Quest: create, edit, submit jobs with templates and script editors
+- Access command-line shell
+
+## Accessing OnDemand  <a name = "getting_started"></a>
+Please make sure you have a valid Quest account, otherwise, computational time on the Quest cluster can be requested [here](https://www.it.northwestern.edu/secure/forms/research/allocation-request.html).
+To connect to OnDemand, open a browser and visit https://qondemand.ci.northwestern.edu/. For unmanaged university computers or home computers, please make sure you are connected to a [Northwestern VPN](https://www.it.northwestern.edu/offcampus/). A popup window would ask for your username and password.
+**Hostname** : qondemand.ci.northwestern.edu
+**Username** : your Northwestern NetID (all lowercase letters)
+**Password** : your Northwestern NetID password
+
+![Sign In Popup Window](signin.png)
+
+### Browser Requirements
+
+Google Chrome, Mozilla Firefox or Microsoft Edge. Please note that IE11 is not supported. 
+
+Also, please make sure that your browser's pop-up blocker isn't preventing the sign in window from being displayed. To configure the pop-up settings in your browser, please visit [this page](https://kb.northwestern.edu/page.php?id=77182).
 
 
-## About <a name = "about"></a>
+---
+
+## File Management
+
+Once you've logged into OnDemand, by clicking "Files" &#8594; "Home Directory" in the main menu, you will be directed to the file explorer page. By default, you will be viewing your home directory on Quest: ```/home/<NetID>```. The home directory has 80GB of storage and is backed up nightly. Backups are kept for two weeks.
+
+### Navigating
+
+The file explorer provides many options to go to your files and file management. You can navigate the folders similarly to a desktop GUI. Your **current directory** is located on the near top of the browsing window.
+
+**Switching folders:**
+
+- Double click the folder name in the main section
+- Single click the folder name in the left tree view
+- Click the button named "GO TO..." and enter your folder directory
+
+**Backtracting the path:**
+
+- Double click the ".." which is the first entry on top of your files in the main section
+- Single click the filename marked as blue in your current directory
+
+**Uploading files**
+
+Go to your destination folder, and then
+
+- Drag files from your local file navigator to your OnDemand browser window
+- Click "Upload" button located on the top-right corner of your browser and click "Choose Files" button to choose files in your local computer
+  
+**Downloading files**
+
+- Click the file or multiselect the files first. Then click the "Download" button. Please note that if multiple files are selected, it will be automatically zipped when downloading.
+  
+**Viewing or Editing files**
+
+- Click the file or multiselect the files first. Then click either "View" or "Edit" button. Please note that to save your editing content, please click the "Save" button located on the top-left corner of your browser.
+
+**Selecting multiple files**
+
+- Press "(Un)Select All" button
+- Press "control+click", "command+click" or "shift+click" on keyboard while selecting
+  
+**To refresh the file explorer**
+
+- Single click the refreshing icon located on the left of current directory
+
+### Viewing Options
+
+To show all dotfiles such as *.bash_profile*, please select the checkbox named "Show Dotfiles" on the upper-right corner of the webpage.
+
+To view file owner or mode, please select the checkbox named "Show Owner/Mode" on the upper-right corner of the webpage.
+
+--- 
+
+## Job Management
+
+OnDemand provides graphical user interface so that you can create new Quest jobs as well as manage and view existing jobs all in one browser. To navigate to job management page, please select "Jobs" in dashboard's main menu, and choose either "Active Jobs" to view existing jobs or "Job Composer" to create a new job.
+
+TODO: 👇
+**Creating a new Quest job**
+Begin by creating a new job from an existing template, from any arbitrary path on the file system, or by copying a job you have already created through the Job Composer......
+
+**Creating templates for job submissions**
+[script.sh templates here](https://kb.northwestern.edu/page.php?id=69247)
+
+**Editing a job**
+Select a job and click xx to open the path in the file explorer so you can edit the job's files.....
+
+**Submiting a job**
+[Error message page](https://kb.northwestern.edu/page.php?id=91392)
+Submit the job and monitor the progress from the "Job Composer" index page.
+
+**Monitoring existing jobs**
+[Job status page](https://kb.northwestern.edu/page.php?id=70711)
+
+--- 
+
+## Accessing Command-line Shell
+
+Without openning a terminal window, you can open  Quest S shell via OnDemand, which is equivalent to [connecting with an SSH terminal](https://kb.northwestern.edu/quest-login) with the following ways.
+
+- Navigate to "Clusters"  &#8594; "_Quest S Shell Access" on the main menu in dashboard
+- Under Job Composer page (qondemand.ci.northwestern.edu/pun/sys/myjobs), click "Open Terminal" button. Please note that in the terminal page, your default working location would be your job script location.
+- Under File Explorer page (qondemand.ci.northwestern.edu/pun/sys/files/fs/home/NetID/), click "Open in Terminal" button. Please note that in the terminal page, your default working location would be whatever is your current viewing directory on OnDemand.
+  - To print your current working directory in shell, please type ```pwd```.
+  - [Command line introduction](https://workshops.rcs.northwestern.edu/workshop/command_line/)
+  - [Quest Quick Start](https://kb.northwestern.edu/quest-quickstart)
+  - [Commonly used commands](https://kb.northwestern.edu/page.php?id=70710)
+
+---
 
 
 
+## References
 
-## Getting Started <a name = "getting_started"></a>
+https://openondemand.org/
+https://www.osc.edu/resources/online_portals/ondemand
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.
 
-### Prerequisites
-
-What things you need to install the software and how to install them.
-
-```
-Give examples
-```
-
-### Installing
-
-A step by step series of examples that tell you how to get a development env running.
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo.
-
-## Usage <a name = "usage"></a>
-
-Add notes about how to use the system.
