@@ -2,11 +2,15 @@
 
 ## Table of Contents
 
-- [Overview](#overview)
-- [Accessing OnDemand](#accessing_ondemand)
-- [File Management](#file_management)
-- [Job Management](#job_management)
-- [Accessing Comman-line Shell](#accessing_shell)
+- [OnDemand](#ondemand)
+  - [Table of Contents](#table-of-contents)
+  - [Overview <a name = "overview"></a>](#overview-)
+  - [Accessing OnDemand  <a name = "accessing_ondemand"></a>](#accessing-ondemand--)
+    - [Browser Requirements](#browser-requirements)
+  - [File Management  <a name = "file_management"></a>](#file-management--)
+  - [Job Management <a name = "job_management"></a>](#job-management-)
+  - [Accessing Command-line Shell <a name = "accessing_shell"></a>](#accessing-command-line-shell-)
+  - [References](#references)
   
 ## Overview <a name = "overview"></a>
 
@@ -21,7 +25,7 @@ Please make sure you have a valid Quest account, otherwise, computational time o
 To connect to OnDemand, open a browser and visit https://qondemand.ci.northwestern.edu/. For unmanaged university computers or home computers, please make sure you are connected to a [Northwestern VPN](https://www.it.northwestern.edu/offcampus/). A popup window would ask for your username and password.\
 **Hostname** : qondemand.ci.northwestern.edu\
 **Username** : your Northwestern NetID (all lowercase letters)\
-**Password** : your Northwestern NetID password\
+**Password** : your Northwestern NetID password
 
 ![Sign In Popup Window](images/signin.png)
 
@@ -39,8 +43,9 @@ Also, please make sure that your browser's pop-up blocker isn't preventing the s
 Once you've logged into OnDemand, by clicking "Files" &#8594; "Home Directory" in the main menu, you will be directed to the file explorer page. By default, you will be viewing your home directory on Quest: ```/home/<NetID>```. The home directory has 80GB of storage and is backed up nightly. Backups are kept for two weeks.
 
 ![File Explorer](images/file_navigation.png)
+![all options](images/allOptions.png)
 
-### Navigating
+**Navigating**
 
 The file explorer provides many options to go to your files and file management. You can navigate the folders similarly to a desktop GUI. Your **current directory** is located on the near top of the browsing window.
 
@@ -51,11 +56,14 @@ The file explorer provides many options to go to your files and file management.
 - Double click the folder name in the main section
 - Single click the folder name in the left tree view
 - Click the button named "GO TO..." and enter your folder directory
+![go to](images/goto.png)
 
 **Backtracting the path:**
 
-- Double click the ".." which is the first entry on top of your files in the main section
 - Single click the filename marked as blue in your current directory
+- Double click the ".." which is the first entry on top of your files in the main section
+![backtract](images/back.png)
+
 
 **Uploading files**
 
@@ -63,29 +71,28 @@ Go to your destination folder, and then
 
 - Drag files from your local file navigator to your OnDemand browser window
 - Click "Upload" button located on the top-right corner of your browser and click "Choose Files" button to choose files in your local computer
-  
+![upload](images/upload.png)
+
 **Downloading files**
 
-- Click the file or multiselect the files first. Then click the "Download" button. Please note that if multiple files are selected, it will be automatically zipped when downloading.
-  
+- Click the file or multiselect with "control+click" the files first. Then click the "Download" button. Please note that if a folder is selected, it will be automatically zipped when downloading.
+![download](images/download.png)
+
 **Viewing or Editing files**
 
-- Click the file or multiselect the files first. Then click either "View" or "Edit" button. Please note that to save your editing content, please click the "Save" button located on the top-left corner of your browser.
+- OnDemand offers built-in file editors with syntax highlight which will automatically be opened in a new tab of your browser. To view or edit a file, select the file name you would like to view or edit, then click the "View" or "Edit" button to direct to the new tab.
+![edit a file](images/edit.png)
 
-**Selecting multiple files**
+- Then single click the refreshing icon located on the left of current directory to let new changes appearing on the screen
+![refresh](images/refresh.png)
 
-- Press "(Un)Select All" button
-- Press "control+click", "command+click" or "shift+click" on keyboard while selecting
-  
-**To refresh the file explorer**
+**Changing viewing options**
 
-- Single click the refreshing icon located on the left of current directory
+- To show all dotfiles such as *.bash_profile*, please select the checkbox named "Show Dotfiles" on the upper-right corner of the webpage.
 
-### Viewing Options
+- To view file owner or mode, please select the checkbox named "Show Owner/Mode" on the upper-right corner of the webpage.
 
-To show all dotfiles such as *.bash_profile*, please select the checkbox named "Show Dotfiles" on the upper-right corner of the webpage.
-
-To view file owner or mode, please select the checkbox named "Show Owner/Mode" on the upper-right corner of the webpage.
+![viewing options](images/viewing_options.png)
 
 --- 
 
@@ -119,8 +126,11 @@ Submit the job and monitor the progress from the "Job Composer" index page.
 Without openning a terminal window, you can open  Quest S shell via OnDemand, which is equivalent to [connecting with an SSH terminal](https://kb.northwestern.edu/quest-login) with the following ways.
 
 - Navigate to "Clusters"  &#8594; "_Quest S Shell Access" on the main menu in dashboard
+![Shell](images/shell.png)
 - Under Job Composer page (qondemand.ci.northwestern.edu/pun/sys/myjobs), click "Open Terminal" button. Please note that in the terminal page, your default working location would be your job script location.
+- ![Shell in Jobs Page](images/shell_jobs.png)
 - Under File Explorer page (qondemand.ci.northwestern.edu/pun/sys/files/fs/home/NetID/), click "Open in Terminal" button. Please note that in the terminal page, your default working location would be whatever is your current viewing directory on OnDemand.
+![Shell in File Explorer](images/shell_fileExplorer.png)
   - To print your current working directory in shell, please type ```pwd```.
   - [Command line introduction](https://workshops.rcs.northwestern.edu/workshop/command_line/)
   - [Quest Quick Start](https://kb.northwestern.edu/quest-quickstart)
