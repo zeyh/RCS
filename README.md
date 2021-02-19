@@ -9,7 +9,7 @@
     - [Browser Requirements](#browser-requirements)
   - [File Management  <a name = "file_management"></a>](#file-management--)
   - [Job Management <a name = "job_management"></a>](#job-management-)
-    - [Creating a new Quest job](#creating-a-new-quest-job)
+    - [Steps for creating a new Quest job](#steps-for-creating-a-new-quest-job)
     - [Creating templates for job submissions](#creating-templates-for-job-submissions)
     - [Monitoring existing jobs](#monitoring-existing-jobs)
   - [Accessing Command-line Shell <a name = "accessing_shell"></a>](#accessing-command-line-shell-)
@@ -104,41 +104,47 @@ Go to your destination folder, and then
 ## Job Management <a name = "job_management"></a>
 
 OnDemand provides graphical user interface so that you can create new Quest jobs as well as manage and view existing jobs all in one browser. To navigate to job management page, please select "Jobs" in dashboard's main menu, and choose either "Active Jobs" to view existing jobs or "Job Composer" to create a new job.
-
-### Creating a new Quest job
-
-**Navigation**
-![job_composer_navigation](images/jobs/job_composer_navigation.png)
-The following window will appear in a new tab of your browser.
+![job_composer_navigation](images/jobs/job_composer_navigation.png)\
+The following window will appear in a new tab of your browser.\
 ![job_composer_look](images/jobs/job_composer_look.png)
 
-TODO: 👇
-**Steps to create a job**
+
+### Steps for creating a new Quest job
 
 1. **Create a new job** by copying from an existing job template directory or a previously run job directory.
    - Create: Begin by creating a new job from an existing template, from any arbitrary path on the file system, or by copying a job you have already created through the Job Composer.
   ![new_job_options](images/jobs/new_job_options.png)
 
-  - **Default template**
-    - for more info, please see the "Creating templates for job submissions" session below.
+     - Option 1: from default template
+       - the script location of default job is "/home/netID/ondemand/data/sys/myjobs/projects/default/#". A new folder will be automatically created with script name of "main_job.sh"
+         - to edit the submission script "main_job.sh", please either click the "/main_job.sh" under "folder contents", or click "Open Editor". A new editor window will be opened in the new tab of your browser.
+       ![edit_main_job_sh](images/jobs/edit_main_job_sh.png)
+       - for more info to create a customized template, please see the "Creating templates for job submissions" session below.
   
-  - **Specified Path**
-  ![new_job_from_path](images/jobs/new_job_from_path.png)
+    - Option 2: from specified Path
+     ![new_job_from_path](images/jobs/new_job_from_path.png)
 
-  - **Selected job**
-  ![new_job_copy](images/jobs/new_job_copy.png)
+    - Option 3: from selected job
+      - This will create an unsubmitted copy of your current selecting job so you can easily make multiple submissions.
+     <!-- ![new_job_copy](images/jobs/new_job_copy.png) -->
   
 
 2. **Edit the files in the job** via the file explorer.
    - Edit: Select a job and click here to open the path in the file explorer so you can edit the job's files.
    - Select an existing job and click here to specify the jobs's server and submit script.
    - Select an existing job and click here to open a new terminal to the job path.
-  
-3. **Submit the job** 
+
+3. **Optional** 
+
+    - to change the job name, specify job script, account, job array, please first select the job, then click the "Job Options" button.
+    - [Examples of Different Types of Jobs on Quest](https://kb.northwestern.edu/page.php?id=70719)
+    ![Examples of Different Types of Jobs on Quest](images/jobs/job_options.png)
+   
+4. **Submit the job** 
    - Submit: Select an existing job and click here to submit the job to the batch queue.
    - [Error message page](https://kb.northwestern.edu/page.php?id=91392)
 
-4. **For existing jobs**
+5. **For existing jobs**
    - Select a running or queued job and click here to stop the job.
    - Select an existing job and click here to remove the job from the list.
 
@@ -186,3 +192,11 @@ Without openning a terminal window, you can open  Quest S shell via OnDemand, wh
 https://openondemand.org/
 https://www.osc.edu/resources/online_portals/ondemand
 https://kb.northwestern.edu/page.php?id=70716
+
+TODO: 
+1. account is optional field? multiple allocation? the need to specify the account?
+2. Option 3: from selected job screenshot
+3. edit jobs/ submission/ existing
+4. job monitoring options
+5. job templates
+
