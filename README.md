@@ -13,6 +13,7 @@
     - [Creating templates for job submissions](#creating-templates-for-job-submissions)
     - [Monitoring existing jobs](#monitoring-existing-jobs)
   - [Accessing Command-line Shell <a name = "accessing_shell"></a>](#accessing-command-line-shell-)
+  - [TODO:](#todo)
   - [References](#references)
   
 ## Overview <a name = "overview"></a>
@@ -114,6 +115,7 @@ The following window will appear in a new tab of your browser.\
 1. **Create a new job** by copying from an existing job template directory or a previously run job directory.
    - Create: Begin by creating a new job from an existing template, from any arbitrary path on the file system, or by copying a job you have already created through the Job Composer.
   ![new_job_options](images/jobs/new_job_options.png)
+ 
 
      - Option 1: from default template
        - the script location of default job is "/home/netID/ondemand/data/sys/myjobs/projects/default/#". A new folder will be automatically created with script name of "main_job.sh"
@@ -122,31 +124,33 @@ The following window will appear in a new tab of your browser.\
        - for more info to create a customized template, please see the "Creating templates for job submissions" session below.
   
     - Option 2: from specified Path
+      - all your files under the source path will be copied to "/home/netID/ondemand/data/sys/myjobs/projects/default/#" for submission.
      ![new_job_from_path](images/jobs/new_job_from_path.png)
 
     - Option 3: from selected job
       - This will create an unsubmitted copy of your current selecting job so you can easily make multiple submissions.
      <!-- ![new_job_copy](images/jobs/new_job_copy.png) -->
-  
+
 
 2. **Edit the files in the job** via the file explorer.
    - Edit: Select a job and click here to open the path in the file explorer so you can edit the job's files.
-   - Select an existing job and click here to specify the jobs's server and submit script.
-   - Select an existing job and click here to open a new terminal to the job path.
+      ![edit_files](images/jobs/edit_files.png)
+   - Select an existing job and click here to open a new terminal starting in the job's path.
+      ![edit_files_in_terminal](images/jobs/edit_files_in_terminal.png)
 
 3. **Optional** 
-
     - to change the job name, specify job script, account, job array, please first select the job, then click the "Job Options" button.
     - [Examples of Different Types of Jobs on Quest](https://kb.northwestern.edu/page.php?id=70719)
     ![Examples of Different Types of Jobs on Quest](images/jobs/job_options.png)
    
 4. **Submit the job** 
    - Submit: Select an existing job and click here to submit the job to the batch queue.
+    ![submit](images/jobs/submit.png)
    - [Error message page](https://kb.northwestern.edu/page.php?id=91392)
 
 5. **For existing jobs**
-   - Select a running or queued job and click here to stop the job.
-   - Select an existing job and click here to remove the job from the list.
+   - You can also stop, delete, or filter existing jobs.
+  ![other_options](images/jobs/other_options.png)
 
 
 ### Creating templates for job submissions
@@ -154,14 +158,15 @@ The following window will appear in a new tab of your browser.\
 ![Job template ui](images/jobs/template.png)
 
 - You can also create new job templates from existing jobs. This way, you can use that job as a template for future jobs. Select the job in the table to copy, then click "Create Template" to initiate the template creation process.
-  - [script.sh templates here](https://kb.northwestern.edu/page.php?id=69247)
+  - [Example submission script with commands and options here](https://kb.northwestern.edu/page.php?id=69247)
 
 
 ### Monitoring existing jobs
 
 ![Active jobs navigation](images/jobs/active_job_navigation.png)
+The "Active Jobs" page lists all of your jobs currently in a queue no matter how they were submitted. You can see job info like ID, Name, User, Account, Time Used, Queue, Status, Cluster, and filter jobs in this page. 
 
-- [Job status page](https://kb.northwestern.edu/page.php?id=70711)
+- [Find out the meaning of each job state here](https://kb.northwestern.edu/page.php?id=70711)
 
 --- 
 
@@ -170,13 +175,13 @@ The following window will appear in a new tab of your browser.\
 Without openning a terminal window, you can open  Quest S shell via OnDemand, which is equivalent to [connecting with an SSH terminal](https://kb.northwestern.edu/quest-login) with the following ways.
 
 - Navigate to "Clusters"  &#8594; "_Quest S Shell Access" on the main menu in dashboard
-![Shell](images/shell/shell.png)
+![shell](images/shell/shell.png)
 
 - Under Job Composer page (qondemand.ci.northwestern.edu/pun/sys/myjobs), click "Open Terminal" button. Please note that in the terminal page, your default working location would be your job script location.
-![Shell in Jobs Page](images/shell/shell_jobs.png)
+![shell_jobs](images/shell/shell_jobs.png)
 
 - Under File Explorer page (qondemand.ci.northwestern.edu/pun/sys/files/fs/home/NetID/), click "Open in Terminal" button. Please note that in the terminal page, your default working location would be whatever is your current viewing directory on OnDemand.
-![Shell in File Explorer](images/shell/shell_fileExplorer.png)
+![shell_fileExplorer](images/shell/shell_fileExplorer.png)
 
   - To print your current working directory in shell, please type ```pwd```.
   - [Command line introduction](https://workshops.rcs.northwestern.edu/workshop/command_line/)
@@ -186,17 +191,17 @@ Without openning a terminal window, you can open  Quest S shell via OnDemand, wh
 ---
 
 
+## TODO:
+1. account is optional field? multiple allocation? the need to specify the account?
+2. running a job and see more infomation about this job in Active Jobs page
+3. a bug? when clicking the "Create new job" button shown below, a new job page will show up with either 0 or one job with no previous job appearing. users will have to click "Jobs" page to see all previous jobs including the new one.
+![create_new_job_in_template_page](images/jobs/create_new_job_in_template_page.png)
+
+---
+
 
 ## References
 
 https://openondemand.org/
 https://www.osc.edu/resources/online_portals/ondemand
 https://kb.northwestern.edu/page.php?id=70716
-
-TODO: 
-1. account is optional field? multiple allocation? the need to specify the account?
-2. Option 3: from selected job screenshot
-3. edit jobs/ submission/ existing
-4. job monitoring options
-5. job templates
-
