@@ -113,9 +113,8 @@ The following window will appear in a new tab of your browser.\
 ### Steps for creating a new Quest job
 
 1. **Create a new job** by copying from an existing job template directory or a previously run job directory.
-   - Create: Begin by creating a new job from an existing template, from any arbitrary path on the file system, or by copying a job you have already created through the Job Composer.
+   - Create: Begin by creating a new job from an existing template, from any arbitrary path on the file system, or by copying a job you have already created through the Job Composer. Please be aware of your current working directory of this new job. 
   ![new_job_options](images/jobs/new_job_options.png)
- 
 
      - Option 1: from default template
        - the script location of default job is "/home/netID/ondemand/data/sys/myjobs/projects/default/#". A new folder will be automatically created with script name of "main_job.sh"
@@ -190,12 +189,9 @@ Without openning a terminal window, you can open  Quest S shell via OnDemand, wh
 
 ---
 
-
 ## TODO:
-1. account is optional field? multiple allocation? the need to specify the account?
+1. see what is default on the account entry for people with mutiple allocations
 2. running a job and see more infomation about this job in Active Jobs page
-3. a bug? when clicking the "Create new job" button shown below, a new job page will show up with either 0 or one job with no previous job appearing. users will have to click "Jobs" page to see all previous jobs including the new one.
-![create_new_job_in_template_page](images/jobs/create_new_job_in_template_page.png)
 
 ---
 
