@@ -14,11 +14,10 @@
     - [Monitoring existing jobs](#monitoring-existing-jobs)
   - [Accessing Command-line Shell <a name = "accessing_shell"></a>](#accessing-command-line-shell-)
   - [TODO:](#todo)
-  - [References](#references)
   
 ## Overview <a name = "overview"></a>
 
-[OnDemand](https://qondemand.ci.northwestern.edu/) provides web access for the university's high performance computing(HPC) systems [QUEST](https://www.it.northwestern.edu/research/user-services/quest/index.html). By opening a web browser, OnDemand users have the oppotunity to:
+[OnDemand](https://qondemand.ci.northwestern.edu/) provides web access for the university's high performance computing(HPC) systems [QUEST](https://www.it.northwestern.edu/research/user-services/quest/index.html). By opening a web browser, OnDemand users have the opportunity to:
 
 - Manage files on Quest: upload, download, view, edit files and folders
 - Compose and monitor jobs on Quest: create, edit, submit jobs with templates and script editors
@@ -37,9 +36,9 @@ To connect to OnDemand, open a browser and visit https://qondemand.ci.northweste
 
 ### Browser Requirements
 
-Google Chrome, Mozilla Firefox or Microsoft Edge. Please note that IE11 is not supported. 
+Google Chrome, Mozilla Firefox, or Microsoft Edge. Please note that IE11 is not supported. 
 
-Also, please make sure that your browser's pop-up blocker isn't preventing the sign in window from being displayed. To configure the pop-up settings in your browser, please visit [this page](https://kb.northwestern.edu/page.php?id=77182).
+Also, please make sure that your browser's pop-up blocker isn't preventing the sign-in window from being displayed. To configure the pop-up settings in your browser, please visit [this page](https://kb.northwestern.edu/page.php?id=77182).
 
 
 ---
@@ -53,21 +52,21 @@ Once you've logged into OnDemand, by clicking "Files" &#8594; "Home Directory" i
 
 **Navigating**
 
-The file explorer provides many options to go to your files and file management. You can navigate the folders similarly to a desktop GUI. Your **current directory** is located on the near top of the browsing window.
+The file explorer provides many options to go to your files and file management. You can navigate the folders similarly to a desktop GUI. Your **current directory** is located the near top of the browsing window.
 
 ![current_directory](images/files/current_directory.png)
 
 **Switching folders:**
 
-- Double click the folder name in the main section
-- Single click the folder name in the left tree view
+- Double-click the folder name in the main section
+- Single-click the folder name in the left tree view
 - Click the button named "GO TO..." and enter your folder directory
 ![go to](images/files/goto.png)
 
-**Backtracting the path:**
+**Backtracking the path:**
 
-- Single click the filename marked as blue in your current directory
-- Double click the ".." which is the first entry on top of your files in the main section
+- Single-click the filename marked as blue in your current directory
+- Double-click the ".." which is the first entry on top of your files in the main section
 ![backtract](images/files/back.png)
 
 
@@ -76,12 +75,12 @@ The file explorer provides many options to go to your files and file management.
 Go to your destination folder, and then
 
 - Drag files from your local file navigator to your OnDemand browser window
-- Click "Upload" button located on the top-right corner of your browser and click "Choose Files" button to choose files in your local computer
+- Click the "Upload" button located on the top-right corner of your browser and click the "Choose Files" button to choose files on your local computer
 ![upload](images/files/upload.png)
 
 **Downloading files**
 
-- Click the file or multiselect with "control+click" the files first. Then click the "Download" button. Please note that if a folder is selected, it will be automatically zipped when downloading.
+- Click the file or multi-select with "control+click" the files first. Then click the "Download" button. Please note that if a folder is selected, it will be automatically zipped when downloading.
 ![download](images/files/download.png)
 
 **Viewing or Editing files**
@@ -89,7 +88,7 @@ Go to your destination folder, and then
 - OnDemand offers built-in file editors with syntax highlight which will automatically be opened in a new tab of your browser. To view or edit a file, select the file name you would like to view or edit, then click the "View" or "Edit" button to direct to the new tab.
 ![edit a file](images/files/edit.png)
 
-- Then single click the refreshing icon located on the left of current directory to let new changes appearing on the screen
+- Then Single-click the refreshing icon located on the left of the current directory to let new changes appearing on the screen
 ![refresh](images/files/refresh.png)
 
 **Changing viewing options**
@@ -104,7 +103,7 @@ Go to your destination folder, and then
 
 ## Job Management <a name = "job_management"></a>
 
-OnDemand provides graphical user interface so that you can create new Quest jobs as well as manage and view existing jobs all in one browser. To navigate to job management page, please select "Jobs" in dashboard's main menu, and choose either "Active Jobs" to view existing jobs or "Job Composer" to create a new job.
+OnDemand provides a graphical user interface so that you can create new Quest jobs as well as manage and view existing jobs all in one browser. To navigate to the job management page, please select "Jobs" in the dashboard's main menu, and choose either "Active Jobs" to view existing jobs or "Job Composer" to create a new job.
 ![job_composer_navigation](images/jobs/job_composer_navigation.png)\
 The following window will appear in a new tab of your browser.\
 ![job_composer_look](images/jobs/job_composer_look.png)
@@ -113,7 +112,7 @@ The following window will appear in a new tab of your browser.\
 ### Steps for creating a new Quest job
 
 1. **Create a new job** by copying from an existing job template directory or a previously run job directory.
-   - Create: Begin by creating a new job from an existing template, from any arbitrary path on the file system, or by copying a job you have already created through the Job Composer. Please be aware of your current working directory of this new job. 
+   - Create: Begin by creating a new job from an existing template, from any arbitrary path on the file system, or by copying a job you have already created through the Job Composer.
   ![new_job_options](images/jobs/new_job_options.png)
 
      - Option 1: from default template
@@ -163,7 +162,7 @@ The following window will appear in a new tab of your browser.\
 ### Monitoring existing jobs
 
 ![Active jobs navigation](images/jobs/active_job_navigation.png)
-The "Active Jobs" page lists all of your jobs currently in a queue no matter how they were submitted. You can see job info like ID, Name, User, Account, Time Used, Queue, Status, Cluster, and filter jobs in this page. 
+The "Active Jobs" page lists all of your jobs currently in a queue no matter how they were submitted. You can see job info like ID, Name, User, Account, Time Used, Queue, Status, Cluster, and filter jobs on this page. 
 
 - [Find out the meaning of each job state here](https://kb.northwestern.edu/page.php?id=70711)
 
@@ -171,15 +170,15 @@ The "Active Jobs" page lists all of your jobs currently in a queue no matter how
 
 ## Accessing Command-line Shell <a name = "accessing_shell"></a>
 
-Without openning a terminal window, you can open  Quest S shell via OnDemand, which is equivalent to [connecting with an SSH terminal](https://kb.northwestern.edu/quest-login) with the following ways.
+Without opening a terminal window, you can open the Quest S shell via OnDemand, which is equivalent to [connecting with an SSH terminal](https://kb.northwestern.edu/quest-login) with the following ways.
 
-- Navigate to "Clusters"  &#8594; "_Quest S Shell Access" on the main menu in dashboard
+- Navigate to "Clusters"  &#8594; "_Quest S Shell Access" on the main menu in the dashboard
 ![shell](images/shell/shell.png)
 
-- Under Job Composer page (qondemand.ci.northwestern.edu/pun/sys/myjobs), click "Open Terminal" button. Please note that in the terminal page, your default working location would be your job script location.
+- Under the Job Composer page (qondemand.ci.northwestern.edu/pun/sys/myjobs), click the "Open Terminal" button. Please note that on the terminal page, your default working location would be your job script location.
 ![shell_jobs](images/shell/shell_jobs.png)
 
-- Under File Explorer page (qondemand.ci.northwestern.edu/pun/sys/files/fs/home/NetID/), click "Open in Terminal" button. Please note that in the terminal page, your default working location would be whatever is your current viewing directory on OnDemand.
+- Under the File Explorer page (qondemand.ci.northwestern.edu/pun/sys/files/fs/home/NetID/), click the "Open in Terminal" button. Please note that on the terminal page, your default working location would be whatever is your current viewing directory on OnDemand.
 ![shell_fileExplorer](images/shell/shell_fileExplorer.png)
 
   - To print your current working directory in shell, please type ```pwd```.
@@ -190,14 +189,29 @@ Without openning a terminal window, you can open  Quest S shell via OnDemand, wh
 ---
 
 ## TODO:
-1. see what is default on the account entry for people with mutiple allocations
-2. running a job and see more infomation about this job in Active Jobs page
-
----
+1. see what is the default on the account entry for people with multiple allocations
+2. running a job and see more information about this job on the Active Jobs page
 
 
-## References
+**References & cites that are related**
 
+official docs:
 https://openondemand.org/
-https://www.osc.edu/resources/online_portals/ondemand
+https://github.com/OSC/openondemand.org
+
+formatting:
 https://kb.northwestern.edu/page.php?id=70716
+
+ondemand tutorial: 
+https://www.osc.edu/resources/online_portals/ondemand
+https://research.computing.yale.edu/training/hpc-series/introduction-open-ondemand-ood
+https://ubccr.freshdesk.com/support/solutions/articles/13000039875-ccr-ondemand-portal
+https://www.chpc.utah.edu/documentation/software/ondemand.php
+
+other hpc page mentioning ondemand:
+https://sites.google.com/view/cluster-user-guide/home
+https://it.tufts.edu/high-performance-computing
+
+
+
+
