@@ -1,4 +1,4 @@
-# OnDemand
+# [OnDemand](https://qondemand.ci.northwestern.edu/)
 
 ## Table of Contents
 
@@ -104,9 +104,12 @@ Go to your destination folder, and then
 ## Job Management <a name = "job_management"></a>
 
 OnDemand provides a graphical user interface so that you can create new Quest jobs as well as manage and view existing jobs all in one browser. To navigate to the job management page, please select "Jobs" in the dashboard's main menu, and choose either "Active Jobs" to view existing jobs or "Job Composer" to create a new job.
+
 ![job_composer_navigation](images/jobs/job_composer_navigation.png)\
 The following window will appear in a new tab of your browser.\
 ![job_composer_look](images/jobs/job_composer_look.png)
+
+
 
 
 ### Steps for creating a new Quest job
@@ -161,8 +164,15 @@ The following window will appear in a new tab of your browser.\
 
 ### Monitoring existing jobs
 
-![Active jobs navigation](images/jobs/active_job_navigation.png)
+
 The "Active Jobs" page lists all of your jobs currently in a queue no matter how they were submitted. You can see job info like ID, Name, User, Account, Time Used, Queue, Status, Cluster, and filter jobs on this page. 
+
+
+**Checking Job Output or Running Details**
+- go to the "Active Jobs" page from the dashboard.
+  ![Active jobs navigation](images/jobs/active_job_navigation.png)
+- Click the expansion button to show details of your selected jobs.
+  ![active_job](images/jobs/active_job.png)
 
 - [Find out the meaning of each job state here](https://kb.northwestern.edu/page.php?id=70711)
 
@@ -189,8 +199,7 @@ Without opening a terminal window, you can open the Quest S shell via OnDemand, 
 ---
 
 ## TODO:
-1. see what is the default on the account entry for people with multiple allocations
-2. running a job and see more information about this job on the Active Jobs page
+1. see what is the default on the account entry for people with multiple allocations... guess it does not matter that much since they will specify account number in the submission script... 
 
 
 **References & cites that are related**
