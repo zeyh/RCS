@@ -202,6 +202,12 @@ Without opening a terminal window, you can open the Quest S shell via OnDemand, 
 1. see what is the default on the account entry for people with multiple allocations... guess it does not matter that much since they will specify account number in the submission script... 
 
 
+1. For VNC server support on compute node
+  nmap-ncat TurboVNC 2.1+ websockify 0.8.0+
+2. add cluster configs: sudo mkdir -p /etc/ood/config/clusters.d and slurm config
+2. Interactive Desktop 
+   - requires Desktop Environment on login/compute node: instaXfce Desktop 4+ Mate Desktop 1+ (default) Gnome Desktop 2 
+
 **References & cites that are related**
 
 official docs:
