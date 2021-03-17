@@ -118,18 +118,23 @@ The following window will appear in a new tab of your browser.\
    - Create: Begin by creating a new job from an existing template, from any arbitrary path on the file system, or by copying a job you have already created through the Job Composer.
   ![new_job_options](images/jobs/new_job_options.png)
 
-     - Option 1: from default template
+    - <ins>Option 1: from specified path (recommended)<ins>
+      - all your files under the source path will be copied to "/home/netID/ondemand/data/sys/myjobs/projects/default/#" for submission.
+      - Please make sure that there is a valid submission script (.sh) in your source path folder
+     ![new_job_from_path](images/jobs/job_submission_from_path.png) 
+      - to edit the submission script "main_job.sh", please either click the "/main_job.sh" under "folder contents", or click "Open Editor". A new editor window will be opened in the new tab of your browser.
+      - [click here for more sample submission scripts](https://github.com/nuitrcs/examplejobs)
+      ![edit_main_job_sh](images/jobs/job_script.png)
+
+     - Option 2: from default template
        - the script location of default job is "/home/netID/ondemand/data/sys/myjobs/projects/default/#". A new folder will be automatically created with script name of "main_job.sh"
-         - to edit the submission script "main_job.sh", please either click the "/main_job.sh" under "folder contents", or click "Open Editor". A new editor window will be opened in the new tab of your browser.
-       ![edit_main_job_sh](images/jobs/edit_main_job_sh.png)
+        
        - for more info to create a customized template, please see the "Creating templates for job submissions" session below.
   
-    - Option 2: from specified Path
-      - all your files under the source path will be copied to "/home/netID/ondemand/data/sys/myjobs/projects/default/#" for submission.
-     ![new_job_from_path](images/jobs/new_job_from_path.png)
+
 
     - Option 3: from selected job
-      - This will create an unsubmitted copy of your current selecting job so you can easily make multiple submissions.
+      - This will create an unsubmitted copy of your current selecting job so you can easily make multiple submissions of the same script.
      <!-- ![new_job_copy](images/jobs/new_job_copy.png) -->
 
 
@@ -165,7 +170,7 @@ The following window will appear in a new tab of your browser.\
 ### Monitoring existing jobs
 
 
-The "Active Jobs" page lists all of your jobs currently in a queue no matter how they were submitted. You can see job info like ID, Name, User, Account, Time Used, Queue, Status, Cluster, and filter jobs on this page. 
+The "Active Jobs" page lists all of your jobs currently in a queue no matter how they were submitted, and jobs that are recently completed within a short time frame. You can see job info like ID, Name, User, Account, Time Used, Queue, Status, Cluster, and filter jobs on this page. 
 
 
 **Checking Job Output or Running Details**
@@ -182,13 +187,13 @@ The "Active Jobs" page lists all of your jobs currently in a queue no matter how
 
 Without opening a terminal window, you can open the Quest S shell via OnDemand, which is equivalent to [connecting with an SSH terminal](https://kb.northwestern.edu/quest-login) with the following ways.
 
-- Navigate to "Clusters"  &#8594; "_Quest S Shell Access" on the main menu in the dashboard
+- Navigate to "Clusters"  &#8594; "_Quest S Shell Access" on the main menu in the dashboard. Please note that on the terminal page, your default working location would be your home folder. 
 ![shell](images/shell/shell.png)
 
 - Under the Job Composer page (qondemand.ci.northwestern.edu/pun/sys/myjobs), click the "Open Terminal" button. Please note that on the terminal page, your default working location would be your job script location.
 ![shell_jobs](images/shell/shell_jobs.png)
 
-- Under the File Explorer page (qondemand.ci.northwestern.edu/pun/sys/files/fs/home/NetID/), click the "Open in Terminal" button. Please note that on the terminal page, your default working location would be whatever is your current viewing directory on OnDemand.
+- Under the File Explorer page (qondemand.ci.northwestern.edu/pun/sys/files/fs/home/NetID/), click the "Open in Terminal" button. Please note that on the terminal page, your default working location would be whatever is your current viewing directory on the OnDemand file explorer.
 ![shell_fileExplorer](images/shell/shell_fileExplorer.png)
 
   - To print your current working directory in shell, please type ```pwd```.
@@ -199,14 +204,14 @@ Without opening a terminal window, you can open the Quest S shell via OnDemand, 
 ---
 
 ## TODO:
-1. see what is the default on the account entry for people with multiple allocations... guess it does not matter that much since they will specify account number in the submission script... 
+1. see how long a completed job will disappear in the active job page
+2. giving more details of the following requirements for adding new extensioins to onDemand:
 
-
-1. For VNC server support on compute node
-  nmap-ncat TurboVNC 2.1+ websockify 0.8.0+
-2. add cluster configs: sudo mkdir -p /etc/ood/config/clusters.d and slurm config
-2. Interactive Desktop 
-   - requires Desktop Environment on login/compute node: instaXfce Desktop 4+ Mate Desktop 1+ (default) Gnome Desktop 2 
+   1. For VNC server support on compute node
+     nmap-ncat TurboVNC 2.1+ websockify 0.8.0+
+   2. add cluster configs: sudo mkdir -p /etc/ood/config/clusters.d and slurm config
+   3. Interactive Desktop 
+      - requires Desktop Environment on login/compute node: instaXfce Desktop 4+ Mate Desktop 1+ (default) Gnome Desktop 2 
 
 **References & cites that are related**
 
