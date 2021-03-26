@@ -13,7 +13,7 @@
     - [Creating templates for job submissions](#creating-templates-for-job-submissions)
     - [Monitoring existing jobs](#monitoring-existing-jobs)
   - [Accessing Command-line Shell <a name = "accessing_shell"></a>](#accessing-command-line-shell-)
-  - [requirements for extension](#requirements-for-extension)
+  - [Requirements for extensions](#requirements-for-extensions)
   - [3. VirtualGL 2.5+ only necessary to enable GPU acceleration](#3-virtualgl-25-only-necessary-to-enable-gpu-acceleration)
   
 ## Overview <a name = "overview"></a>
@@ -203,7 +203,7 @@ Without opening a terminal window, you can open the Quest S shell via OnDemand, 
   - [Commonly used commands](https://kb.northwestern.edu/page.php?id=70710)
 
 ---
-## requirements for extension
+## Requirements for extensions
 ###[Interactive Apps](https://osc.github.io/ood-documentation/latest/app-development/interactive/setup.html) 
 Including Deskptop App, Jupyter Notebook server, RStudio server, COMSOL server, etc
 - VNC server on the compute node
@@ -226,7 +226,7 @@ Including launching a Gnome 2, Mate, or Xfce desktop
   4. Config job submission 
 
 ###[Jupyter Notebook](https://osc.github.io/ood-documentation/latest/app-development/tutorials-interactive-apps/add-jupyter.html)
-- software requirements
+- Software requirements
   1. Jupyter Notebook 4.2.3+ (earlier versions are untested but may work for you)
   1. OpenSSL 1.0.1+ (used to hash the Jupyter Notebook server password)
 - Configure sandbox directory "${HOME}/ondemand/dev"
@@ -236,14 +236,14 @@ Including launching a Gnome 2, Mate, or Xfce desktop
 - Deploy by copying the app to the system deployment location as root
 
 ###[RStudio](https://osc.github.io/ood-documentation/latest/app-development/tutorials-interactive-apps/add-rstudio.html)
-- similar to above but with different software requirements and additional Singularity config
+- Similar to above but with different software requirements and additional Singularity config
   1. R
   2. RStudio
   3. Singularity (2.x or 3.x)
 
 
 ###[Matlab](https://osc.github.io/ood-documentation/latest/app-development/tutorials-interactive-apps/add-matlab.html)
-- similar to above but with different software requirements and additional Launch Script and window manager configuration
+- Similar to above but with different software requirements and additional Launch Script and window manager configuration
   1. Xfce Desktop 4+ or Mate Desktop 1+ (provides window manager, terminal, file manager)
   2. OpenJDK runtime
   3. VirtualGL 2.5+ only necessary to enable GPU acceleration
