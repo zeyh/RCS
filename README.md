@@ -13,7 +13,8 @@
     - [Creating templates for job submissions](#creating-templates-for-job-submissions)
     - [Monitoring existing jobs](#monitoring-existing-jobs)
   - [Accessing Command-line Shell <a name = "accessing_shell"></a>](#accessing-command-line-shell-)
-  - [TODO:](#todo)
+  - [requirements for extension](#requirements-for-extension)
+  - [3. VirtualGL 2.5+ only necessary to enable GPU acceleration](#3-virtualgl-25-only-necessary-to-enable-gpu-acceleration)
   
 ## Overview <a name = "overview"></a>
 
@@ -202,17 +203,51 @@ Without opening a terminal window, you can open the Quest S shell via OnDemand, 
   - [Commonly used commands](https://kb.northwestern.edu/page.php?id=70710)
 
 ---
+## requirements for extension
+###[Interactive Apps](https://osc.github.io/ood-documentation/latest/app-development/interactive/setup.html) 
+Including Deskptop App, Jupyter Notebook server, RStudio server, COMSOL server, etc
+- VNC server on the compute node
+  1. nmap-ncat
+  2. TurboVNC 2.1+
+  3. websockify 0.8.0+
+- Modify cluster config /etc/ood/config/clusters.d/my_cluster.yml
+- Reverse proxy
 
-## TODO:
-1. see how long a completed job will disappear in the active job page
-2. giving more details of the following requirements for adding new extensioins to onDemand:
+###[Interactive Desktop](https://osc.github.io/ood-documentation/latest/enable-desktops.html)
+Including launching a Gnome 2, Mate, or Xfce desktop 
+- Requires a Desktop Environment be installed on the nodes that the batch job is meant to run on
+  1. Xfce Desktop 4+
+  2. Mate Desktop 1+ (default)
+  3. Gnome Desktop 2 (currently we do not support Gnome 3)
+- Configure working directory /etc/ood/config/apps/bc_desktop (form.yml, my_cluster.yml, owens_login_desktop.yml, my_submit.yml.erb)
+  1. Configure the submission parameters for cluster’s resource manager.
+  2. Configure User Form 
+  3. Configure LinuxHost Adapter
+  4. Config job submission 
 
-   1. For VNC server support on compute node
-     nmap-ncat TurboVNC 2.1+ websockify 0.8.0+
-   2. add cluster configs: sudo mkdir -p /etc/ood/config/clusters.d and slurm config
-   3. Interactive Desktop 
-      - requires Desktop Environment on login/compute node: instaXfce Desktop 4+ Mate Desktop 1+ (default) Gnome Desktop 2 
+###[Jupyter Notebook](https://osc.github.io/ood-documentation/latest/app-development/tutorials-interactive-apps/add-jupyter.html)
+- software requirements
+  1. Jupyter Notebook 4.2.3+ (earlier versions are untested but may work for you)
+  1. OpenSSL 1.0.1+ (used to hash the Jupyter Notebook server password)
+- Configure sandbox directory "${HOME}/ondemand/dev"
+  1. Navigate to https://ondemand.my_center.edu/, link to git, clone the app
+  2. Configure user forms (form.yml)
+  3. Configure job-submit parameters (submit.yml.erb)
+- Deploy by copying the app to the system deployment location as root
 
+###[RStudio](https://osc.github.io/ood-documentation/latest/app-development/tutorials-interactive-apps/add-rstudio.html)
+- similar to above but with different software requirements and additional Singularity config
+  1. R
+  2. RStudio
+  3. Singularity (2.x or 3.x)
+
+
+###[Matlab](https://osc.github.io/ood-documentation/latest/app-development/tutorials-interactive-apps/add-matlab.html)
+- similar to above but with different software requirements and additional Launch Script and window manager configuration
+  1. Xfce Desktop 4+ or Mate Desktop 1+ (provides window manager, terminal, file manager)
+  2. OpenJDK runtime
+  3. VirtualGL 2.5+ only necessary to enable GPU acceleration
+---
 **References & cites that are related**
 
 official docs:
