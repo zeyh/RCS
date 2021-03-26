@@ -13,9 +13,7 @@
     - [Creating templates for job submissions](#creating-templates-for-job-submissions)
     - [Monitoring existing jobs](#monitoring-existing-jobs)
   - [Accessing Command-line Shell <a name = "accessing_shell"></a>](#accessing-command-line-shell-)
-  - [Requirements for extensions](#requirements-for-extensions)
-  - [3. VirtualGL 2.5+ only necessary to enable GPU acceleration](#3-virtualgl-25-only-necessary-to-enable-gpu-acceleration)
-  
+
 ## Overview <a name = "overview"></a>
 
 [OnDemand](https://qondemand.ci.northwestern.edu/) provides web access for the university's high performance computing(HPC) systems [QUEST](https://www.it.northwestern.edu/research/user-services/quest/index.html). By opening a web browser, OnDemand users have the opportunity to:
@@ -203,8 +201,8 @@ Without opening a terminal window, you can open the Quest S shell via OnDemand, 
   - [Commonly used commands](https://kb.northwestern.edu/page.php?id=70710)
 
 ---
-## Requirements for extensions
-###[Interactive Apps](https://osc.github.io/ood-documentation/latest/app-development/interactive/setup.html) 
+**Requirements for Extensions**
+####[Interactive Apps](https://osc.github.io/ood-documentation/latest/app-development/interactive/setup.html) 
 Including Deskptop App, Jupyter Notebook server, RStudio server, COMSOL server, etc
 - VNC server on the compute node
   1. nmap-ncat
@@ -213,7 +211,7 @@ Including Deskptop App, Jupyter Notebook server, RStudio server, COMSOL server, 
 - Modify cluster config /etc/ood/config/clusters.d/my_cluster.yml
 - Reverse proxy
 
-###[Interactive Desktop](https://osc.github.io/ood-documentation/latest/enable-desktops.html)
+####[Interactive Desktop](https://osc.github.io/ood-documentation/latest/enable-desktops.html)
 Including launching a Gnome 2, Mate, or Xfce desktop 
 - Requires a Desktop Environment be installed on the nodes that the batch job is meant to run on
   1. Xfce Desktop 4+
@@ -225,7 +223,7 @@ Including launching a Gnome 2, Mate, or Xfce desktop
   3. Configure LinuxHost Adapter
   4. Config job submission 
 
-###[Jupyter Notebook](https://osc.github.io/ood-documentation/latest/app-development/tutorials-interactive-apps/add-jupyter.html)
+####[Jupyter Notebook](https://osc.github.io/ood-documentation/latest/app-development/tutorials-interactive-apps/add-jupyter.html)
 - Software requirements
   1. Jupyter Notebook 4.2.3+ (earlier versions are untested but may work for you)
   1. OpenSSL 1.0.1+ (used to hash the Jupyter Notebook server password)
@@ -235,18 +233,20 @@ Including launching a Gnome 2, Mate, or Xfce desktop
   3. Configure job-submit parameters (submit.yml.erb)
 - Deploy by copying the app to the system deployment location as root
 
-###[RStudio](https://osc.github.io/ood-documentation/latest/app-development/tutorials-interactive-apps/add-rstudio.html)
+####[RStudio](https://osc.github.io/ood-documentation/latest/app-development/tutorials-interactive-apps/add-rstudio.html)
 - Similar to above but with different software requirements and additional Singularity config
   1. R
   2. RStudio
   3. Singularity (2.x or 3.x)
 
 
-###[Matlab](https://osc.github.io/ood-documentation/latest/app-development/tutorials-interactive-apps/add-matlab.html)
+####[Matlab](https://osc.github.io/ood-documentation/latest/app-development/tutorials-interactive-apps/add-matlab.html)
 - Similar to above but with different software requirements and additional Launch Script and window manager configuration
   1. Xfce Desktop 4+ or Mate Desktop 1+ (provides window manager, terminal, file manager)
   2. OpenJDK runtime
   3. VirtualGL 2.5+ only necessary to enable GPU acceleration
+   
+   
 ---
 **References & cites that are related**
 
