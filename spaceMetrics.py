@@ -9,12 +9,24 @@ some description
 # -----------------------------------------------------------------------------
 '''
 USAGE ----------------------------------------------------------------
-python spaceMetrics.py
+
+$ python spaceMetrics.py -h 
+#find out all available arguments
+
+$ python spaceMetrics.py --dir data --uid user1 -desc -median
+# get all files within a folder named data, 
+# find out the usage specifically for a netID of user1
+# print the output in a descending order
+# also print out the median
+
+
+TODO ----------------------------------------------------------------
 * 1. Input user netid → return users space change through out the month 
 2. input frequency number → return user netid with frequencies + dates
 * 3. input space number → return user netid with space above + dates 
 4. add duration flag → discrete dates to days
-5. input dates → return stats: mean, median 
+* 5. input dates → return stats: mean, median 
+
 OPTIONS ----------------------------------------------------------------
 A description of each option that can be passed to this script
 ARGUMENTS -------------------------------------------------------------
@@ -26,7 +38,8 @@ import glob
 import datetime
 from multiprocessing import Pool
 from itertools import product
-
+from collections import OrderedDict
+import statistics
 
 def addArguments():
     """
@@ -42,24 +55,17 @@ def addArguments():
                         help='user id')
     parser.add_argument('--spaceThresh', default='',
                         help='a number indicating the lowerbound of the space you d like to query')
+    # parser.add_argument('--desc', default=True,type=str2bool, nargs='?',
+    #                     help='output in a descending order?')
+    parser.add_argument('-desc','--desc', action='store_true', help='output in a descending order')
+    parser.add_argument('-mean', '--mean', action='store_true', help='print the mean')
+    parser.add_argument('-std','--std', action='store_true',  help='print the standard deviation')
+    parser.add_argument('-median', '--median', action='store_true',  help='print the median')
+    
     args = parser.parse_args()
     if args.dir and args.dir[-1] != "/":
         args.dir += "/"
     return args
-
-
-def readLogs():
-    """
-    TESTING - NOT USED
-    """
-    print(args.dir + args.prefix)
-    print(glob.glob(args.dir + args.prefix + "*"))
-    for filename in glob.glob(args.dir + args.prefix + "*"):
-        print(filename)
-        date = filename[-6:]
-        print(date)
-    print("done reading logs")
-
 
 def calDuration(date1, date2):
     """
@@ -70,16 +76,12 @@ def calDuration(date1, date2):
     :param: two string of 6 digits in the format of MM/DD/YY
     :return: integer in days indicating duration between two input dates
     """
-    date1 = datetime.datetime(
-        2000+int(date1[-2:]), int(date1[0:2]), int(date1[2:4]))
-    date2 = datetime.datetime(
-        2000+int(date2[-2:]), int(date2[0:2]), int(date2[2:4]))
-    duration = date1-date2
+    duration = strToDate(date1)-strToDate(date2)
     return duration.days
 
-def sortDict(dict, isAscending):
+
+def sortDict(dict, descending):
     """
-    TODO⚠️
     sortDict return a sorted dictionary
     Assuming the dates are the last 6 digits in the format of MM/DD/YY
     Assuming all dates are before the year of 2000
@@ -87,9 +89,10 @@ def sortDict(dict, isAscending):
     :param: dict - a dictionary to be sorted by date, isAscending - a bool indicating the sorting order
     :return: a sorted dictionary
     """
-    # mylist.sort(key=lambda x: (len(x.split())>1, x if len(x.split())==1 else int(x.split()[-1]) ) )
-    print(sorted(dict.items(), key =
-             lambda kv:(kv[1], kv[0])))   
+    compare = lambda key1, key2: key1 if (strToDate(key1) > strToDate(key2)) else key2
+    result = OrderedDict(sorted(dict.items(), key=lambda x:strToDate(x[0]),reverse=descending)) # "key=..." equals to the compare function above
+    return result
+
     
 def mergeDict(myList):
     """
@@ -103,6 +106,7 @@ def mergeDict(myList):
         result.update(d)
     return result
 
+
 def getDate(filename):
     """
     getDate get the date from input filename
@@ -114,6 +118,11 @@ def getDate(filename):
     """
     date1 = filename[-6:]
     return date1
+
+
+def strToDate(date1):
+    return datetime.datetime(
+        2000+int(date1[-2:]), int(date1[0:2]), int(date1[2:4]))
 
 
 def uidQuery(uid):
@@ -133,7 +142,7 @@ def uidQuery(uid):
     spaceList = pool.map(uidReadFiles, params)
     spaceList = list(filter(None, spaceList)) # filter out the None values in the list
     if spaceList != []:
-        return mergeDict(spaceList) #return one single dictionary rather than a list
+        return sortDict(mergeDict(spaceList), args.desc) #return one single dictionary rather than a list
     else:
         print("ERROR: netID not found")
         return 
@@ -162,6 +171,7 @@ def uidReadFiles(filenamewithId):
             return tmplist
     return None
 
+
 def spaceQuery(threshold):
     """
     spaceQuery return all uid above 
@@ -185,10 +195,11 @@ def spaceQuery(threshold):
     spaceList = pool.map(spaceReadFiles, params) 
     spaceList = list(filter(None, spaceList)) # filter out the None values in the list
     if spaceList != []:
-        return mergeDict(spaceList) #return one single dictionary rather than a list
+        return sortDict(mergeDict(spaceList), args.desc) #return one single dictionary rather than a list
     else:
         print("ERROR: no user not found above the thresh")
         return 
+    
     
 def spaceReadFiles(filenameWithThresh):   
     """
@@ -213,17 +224,73 @@ def spaceReadFiles(filenameWithThresh):
     return tmplist
 
 
+def findMean(dict):
+    return statistics.mean(dict.values())
+
+
+def findMedian(dict):
+    return statistics.median(dict.values())
+
+
+def findStdev(dict):
+    return statistics.stdev(dict.values())
+
+
+def str2bool(v):
+    """
+    NOT USED
+    see https://stackoverflow.com/questions/15008758/parsing-boolean-values-with-argparse
+    """
+    if isinstance(v, bool):
+        return v
+    if v.lower() in ('yes', 'true', 't', 'y', '1'):
+        return True
+    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
+        return False
+    else:
+        raise argparse.ArgumentTypeError('Boolean value expected.')
+
+
+def readLogs():
+    """
+    TESTING - NOT USED
+    """
+    print(args.dir + args.prefix)
+    print(glob.glob(args.dir + args.prefix + "*"))
+    for filename in glob.glob(args.dir + args.prefix + "*"):
+        print(filename)
+        date = filename[-6:]
+        print(date)
+    print("done reading logs")
+
+
+
 if __name__ == '__main__':
     global args
     args = addArguments()
     
+    # TESTING ======================
     # readLogs()
     # calDuration("071221", "063021")
+    testDictionary = {'120722': 90.0, '050821': 100.0, '060821': 10.0}
+    sortDict(testDictionary, True)
+    # ==============================
     
-    result1 = uidQuery("user1")
-    result2 = spaceQuery("0")
+    if args.uid != "":
+        result1 = uidQuery(args.uid)
+        print("uid", result1)
+        if args.mean == True:
+            print("Average: %.1f" % findMean(result1))
+        if args.median == True:
+            print("Median:  %.1f" % findMedian(result1))
+        if args.std == True:
+            print("Standard Deviation:  %.1f" % findStdev(result1))
+            
+    if args.spaceThresh != "":
+        result2 = spaceQuery(args.spaceThresh)
+        print("a space limit number", result2)
     
-    print("uid", result1)
-    print("a space limit number", result2)
     
     print("done")
+
+
