@@ -21,16 +21,26 @@ $ python spaceMetrics.py --dir data --uid user1 -desc -median
 
 
 TODO ----------------------------------------------------------------
+* shell & environmnet & code structure
 * Input user netid → return users space change through out the month 
 * add duration flag → discrete dates to days (resolved in uidQuery)
 * input space number → return user netid with space above + dates 
 * input frequency number → return user netid with frequencies (resolved in spaceQuery)
 ! rank user based on their average usage
 * input dates → return stats: mean, median 
-? Add labels/legends to the plot
-? Zoom in - query only specific begin & end dates / single day
+! zoom in - query only specific begin & end dates
+! plot multiuser on a single img
+? ❗️ add monthly bars 
+? Add more labels/legends to the plot 
+? Example commands on readME
+
+===============================================
+# ? more on error handling on input dates sanity check 
+? unifying date vs datetime vs string input format
+# ?Optimize Memory usage + running performance 
+
 ? Single user - how many days above certain thresh
-? add monthly bars - deletion days 
+? single date/ bars on deletion days 
 
 ? ways for identifying 90 days perid [deletion policies]
 ? minimun occupied for x days [sort by that]
@@ -57,11 +67,13 @@ A description of each option that can be passed to this script
 ARGUMENTS -------------------------------------------------------------
 A description of each argument that can or must be passed to this script
 --dir ../../artspace_reports/daily/scratch
+../../projects/a9009/artspace_reports/daily/scratch
 '''
 
 import argparse
 import glob
 import datetime
+from datetime import date
 from multiprocessing import Pool
 from collections import OrderedDict
 import statistics
@@ -70,7 +82,7 @@ from itertools import chain
 class LogReader:
     def __init__(self):
         """
-        __init__ initialize the class with either input arguments, or default arguments
+        initialize the class with either input arguments, or default arguments
         fill self.args with values
         """
         parser = argparse.ArgumentParser(description='description tbd...')
@@ -81,6 +93,13 @@ class LogReader:
                             help='user id')
         parser.add_argument('--spaceThresh', default='',
                             help='a number indicating the lowerbound of the space you d like to query')
+       
+        parser.add_argument('-start','--start', default='',
+                    help='a starting date in the format of MM/DD/YY')
+        parser.add_argument('-end','--end', default='',
+                            help='an ending date in the format of MM/DD/YY')
+       
+       
         # parser.add_argument('--desc', default=True,type=str2bool, nargs='?',
         #                     help='output in a descending order?')
         parser.add_argument('-desc','--desc', action='store_true', help='output in a descending order')
@@ -89,10 +108,11 @@ class LogReader:
         parser.add_argument('-median', '--median', action='store_true',  help='print the median')
         
         self.args = parser.parse_args()
+        self.rankedUserList = {}
         if self.args.dir and self.args.dir[-1] != "/":
             self.args.dir += "/"
-            
 
+        
     def setArgs(self, arg):
         """
         setting keyword for query
@@ -114,44 +134,64 @@ class LogReader:
     def printArgs(self):
         print(self.args)
 
-    def queryUidInfo(self):
+    def queryUidInfo(self, printing):
         """
-        uidQuery get the occupacy data 
+        get the occupacy data of each uID
         Assuming that data is formatted as "uid allocationNumber spaceOccupied"
         Assuming that one uid would appear in each date once
-
-        :param: uid a string of a user's netID
-        :return: 2d list in the form of[[dates, space],]
+        :param uid:  string - a user's netID
+        :return: 2d list - in the form of[[dates, space],]
         """
-        print("Reading all files under", self.args.dir if self.args.dir else "current directory", ", starting with", self.args.prefix)
-        print("Querying all info matching netID", self.args.uid)
+        if self.args.start != "" and self.args.end != "":  # check input dates
+            if not checkDate(self.args.start) or not checkDate(self.args.end):
+                print("ERROR IN DATES 1")
+                return
+            # try:
+            #     if not checkDate(self.args.start) or not checkDate(self.args.end):
+            #         print("ERROR IN DATES 1")
+            #         return
+            # except:
+            #     print("ERROR IN DATES 2 - ALL ERROR CATCHED")
+            #     return
+            
+        if printing:
+            print("Reading all files under", self.args.dir if self.args.dir else "current directory", ", starting with", self.args.prefix)
+            print("Querying all info matching netID", self.args.uid)
         spaceList = [] # collect the output
         pool = Pool()
         params = [] # feed in one element from list of params for each thread
-        for filename in glob.glob(self.args.dir + self.args.prefix + "*"):
-            params.append(filename+" "+self.args.uid) 
+        for filename in glob.glob(self.args.dir + self.args.prefix + "*"): #TODO change params format for feeding in
+            params.append(filename+" "+self.args.uid+" "+self.args.start+" "+self.args.end)
         spaceList = pool.map(uidReadFiles, params)
         spaceList = list(filter(None, spaceList)) # filter out the None values in the list
         if spaceList != []:
             finalDict = sortDict(mergeDict(spaceList), self.args.desc) #return one single dictionary rather than a list
-            # if printing:
-            #     printStats(finalDict)
-            #     printDuration(finalDict)
+            if printing:
+                printStats(finalDict)
+                printDuration(finalDict)
             return finalDict
         else:
             print("ERROR: netID not found. Please run with -h for help.")
             return 
 
-
-        
         
     def querySpaceAbove(self):
         """
-        spaceQuery return all uid above 
-
-        :param: filenamewithId a string of "filename uid"
-        :return: 1d list matching given uid and dates
+        return all uid above args.spaceThresh
+        :param filenamewithId: string - in the form of "filename uid"
+        :return: 1d list - matching given uid and dates
         """
+        if self.args.start != "" and self.args.end != "":  # check input dates
+            if not checkDate(self.args.start) or not checkDate(self.args.end):
+                print("ERROR IN DATES 1")
+                return
+            # try:
+            #     if not checkDate(self.args.start) or not checkDate(self.args.end):
+            #         print("ERROR IN DATES 1")
+            #         return
+            # except:
+            #     print("ERROR IN DATES 2 - ALL ERROR CATCHED")
+            #     return
         try:
             print("Reading all files under", self.args.dir if self.args.dir else "current directory", ", starting with", self.args.prefix)
             print("Querying all user id with", self.args.spaceThresh, "GB occupied and above")
@@ -162,18 +202,19 @@ class LogReader:
         except:
             print("ERROR: please enter a valid space lowerbound number")
             return
+        
         spaceList = [] # collect the output
         pool = Pool()
         params = [] # feed in one element from list of params for each thread
-        for filename in glob.glob(self.args.dir + self.args.prefix + "*"):
-            params.append(filename+" "+str(self.args.spaceThresh))
+        for filename in glob.glob(self.args.dir + self.args.prefix + "*"): #TODO change params format for feeding in
+            params.append(filename+" "+str(self.args.spaceThresh)+" "+self.args.start+" "+self.args.end)
         spaceList = pool.map(spaceReadFiles, params) 
         spaceList = list(filter(None, spaceList)) # filter out the None values in the list
         if spaceList != []:
             finalDict = sortDict(mergeDict(spaceList), self.args.desc) #return one single dictionary rather than a list
             userList = printUniqueUserCount(finalDict)
-            print(userList)
-            # self.rankUsers(userList)
+            ranked_result = self.rankUsers(userList)
+            self.rankedUserList = ranked_result
             printDuration(finalDict)
             return finalDict
         else:
@@ -182,15 +223,20 @@ class LogReader:
         
     def rankUsers(self, users):
         '''
-        TODO
+        rank a list of user based on their mean/std/median space
+        :param users: 1d list - unsorted uids
+        TODO:param comp: string - keyword for deciding the comparision method: mean, median, std
+        :return: a dictionary of ranked user and their corresponding space value
         '''
         d = {}
         for u in users:
             self.setUid(u)
             uInfo = self.queryUidInfo(False)
-            mean = findMean(uInfo)
-            d[u] = mean
-        print(sorted(d, key=d.get, reverse=True))
+            val = findMean(uInfo) #TODO easier change to std
+            d[u] = round(val,2)
+        result =  OrderedDict(d).items()
+        print(">> Ranked", result)
+        return dict(result)
         
     def readLocalDir(self):
         """
@@ -200,8 +246,8 @@ class LogReader:
         print(glob.glob(self.args.dir + self.args.prefix + "*"))
         for filename in glob.glob(self.args.dir + self.args.prefix + "*"):
             print(filename)
-            date = filename[-6:]
-            print(date)
+            date1 = filename[-6:]
+            print(date1)
         print("done reading logs")
 
 
@@ -211,18 +257,18 @@ class LogReader:
 
 def uidReadFiles(filenamewithId):
     """
-    uidReadFiles get all occupacy data given a user id
-
-    :param: filenamewithId a string of "filename uid"
-    :return: 1d list matching given uid and dates
+    get all occupacy data given a user id
+    :param filenamewithId: string - in the form of "filename uid"
+    :return: 1d list - matching given uid and dates
     """
-    filename, uid = filenamewithId.split()
+    filename, uid, start, end = filenamewithId.split()
     try: 
         currFile = open(filename, 'r')
     except FileNotFoundError:
         print("ERROR: Wrong file or file path. Please run with -h for help.")
         return
-    
+    if not start or not end or not checkDateBoundary(getDate(filename), start, end):
+        return
     tmplist = {getDate(filename):""}
     for line in currFile:
         currLine = line.strip().split()
@@ -237,18 +283,18 @@ def uidReadFiles(filenamewithId):
         
 def spaceReadFiles(filenameWithThresh):   
     """
-    spaceReadFiles get all occupacy data given a threshold number
-
-    :param: filenameWithThresh a string of "filename threshold"
-    :return: 1d list of dates and uid matching and above given thresh
+    get all occupacy data given a threshold number
+    :param filenameWithThresh: string - in the form of "filename threshold"
+    :return: 1d list - dates and uid matching and above given thresh
     """
-    filename, thresh = filenameWithThresh.split()
+    filename, thresh, start, end = filenameWithThresh.split()
     try: 
         currFile = open(filename, 'r')
     except FileNotFoundError:
         print("ERROR: Wrong file or file path. Please run with -h for help.")
         return
-    
+    if not start or not end or not checkDateBoundary(getDate(filename), start, end):
+        return
     tmplist = {getDate(filename):[]}
     for line in currFile:
         currLine = line.strip().split()
@@ -264,6 +310,23 @@ def spaceReadFiles(filenameWithThresh):
 # * Helper functions
 # * =====================================
 
+def checkDate(date1):
+    '''
+    with input format MM/DD/YY
+    TODO handling different formats, different format errors
+    '''
+    if date1 == "":
+        print("ERROR: please enter a valid begin/end date in MM/DD/YY")
+        return
+    date1 = date1.split("/")
+    if len(date1) != 3:
+        print("ERROR: please enter a valid begin/end date in MM/DD/YY")
+        return
+    date_final = ""
+    for i in date1:
+        date_final += i
+    return strToDate(date_final) if checkDateBoundary(date_final, "", "") else None
+    
 def printUniqueUserCount(dict):
     '''
     find out unique values in a dict
@@ -275,13 +338,16 @@ def printUniqueUserCount(dict):
 
 def printStats(dict):
     '''
-    associated with queryUidInfo()
+    associated with function queryUidInfo
     print the stats given a user id
     '''
-    print("Mean: %.1f" % findMean(dict))
-    print("Median:  %.1f" % findMedian(dict))
-    print("Standard Deviation:  %.1f" % findStdev(dict))
-
+    if(len(dict) > 1):
+        print("Mean: %.1f" % findMean(dict))
+        print("Median:  %.1f" % findMedian(dict))
+        print("Standard Deviation:  %.1f" % findStdev(dict))
+    else:
+        print("Only contains one data point")
+        
 def printDuration(dict):
     days = list(dict.keys())
     print("Begin from: ", formatDate(strToDate(days[0])), "to", formatDate(strToDate(days[-1])), "-", calDuration(days[0], days[-1]), "days")
@@ -289,9 +355,8 @@ def printDuration(dict):
     
 def mergeDict(myList):
     """
-    mergeDict return a single dictionary rather than a list of dictionaries
-
-    :param: dict - a list of dictionary  
+    return a single dictionary rather than a list of dictionaries
+    :param myList: 1d list - a list of dictionary  
     :return: one dictionary
     """
     result = {}
@@ -301,11 +366,11 @@ def mergeDict(myList):
 
 def sortDict(dict, descending):
     """
-    sortDict return a sorted dictionary
+    sort the dictionary
     Assuming the dates are the last 6 digits in the format of MM/DD/YY
     Assuming all dates are before the year of 2000
 
-    :param: dict - a dictionary to be sorted by date, isAscending - a bool indicating the sorting order
+    :param dict: dictionary - to be sorted by date, isAscending - a bool indicating the sorting order
     :return: a sorted dictionary
     """
     compare = lambda key1, key2: key1 if (strToDate(key1) > strToDate(key2)) else key2
@@ -322,11 +387,14 @@ def findStdev(dict):
     return statistics.stdev(dict.values())
 
 def strToDate(date1):
+    if "/" in date1:
+        dateSplited = date1.split("/")
+        date1 = ''.join(str(e) for e in dateSplited)
     return datetime.datetime(
         2000+int(date1[-2:]), int(date1[0:2]), int(date1[2:4]))
 
-def formatDate(date):
-    return date.strftime("%m/%d/%Y")
+def formatDate(d):
+    return d.strftime("%m/%d/%Y")
 
 def str2bool(v):
     """
@@ -344,35 +412,60 @@ def str2bool(v):
 
 def calDuration(date1, date2):
     """
-    calDuration calcualte the duration between two input dates
+    calcualte the duration between two input dates
     Assuming the dates are the last 6 digits in the format of MM/DD/YY
     Assuming all dates are before the year of 2000
 
-    :param: two string of 6 digits in the format of MM/DD/YY
-    :return: integer in days indicating duration between two input dates
+    :param date1/date2: string - of 6 digits in the format of MM/DD/YY
+    :return: integer - in days indicating duration between two input dates
     """
     duration = strToDate(date1)-strToDate(date2)
     return abs(duration.days) + 1 #calcuated both end dates #TODO
   
 def getDate(filename):
     """
-    getDate get the date from input filename
+    get the date from input filename
     Assuming the dates are the last 6 digits in the format of MM/DD/YY
     Assuming all dates are before the year of 2000
 
-    :param: one string of filename consisting of the date
-    :return: a string of date in the formate of MM/DD/YY
+    :param filename: string - filename consisting of the date
+    :return: string - date in the formate of MM/DD/YY
     """
     date1 = filename[-6:]
     return date1
 
+def checkDateBoundary(d, lower, upper):
+    '''
+    check if its a valid date period for query
+    '''
+    if lower == "":
+        lower = "012621"
+    if upper == "":
+        upper = date.today()
+    earliest = strToDate(lower)
+    if not isinstance(upper, datetime.date):
+        upper = strToDate(upper).date()
+    latest = upper
+    if earliest.date() < strToDate(d).date() < latest:
+        return True
+    return False
+    
 
 if __name__ == '__main__':
+    # * TESTING ======================
+    # print(checkDateBoundary("05/20/21", "01/01/2021",  date.today()))
+    # print(checkDateBoundary("05/20/21", "01/01/2021",  "11/01/2021"))
+    # calDuration("071221", "063021")
+    # testDictionary = {'120722': 90.0, '050821': 100.0, '060821': 10.0}
+    # sortDict(testDictionary, True)
+    print("\nFinished Testing.")
+    # * =============================
+    
     # * INIT ======================
     logReader = LogReader()
     
     if logReader.args.uid != "":
-        result1 = logReader.queryUidInfo()
+        result1 = logReader.queryUidInfo(True)
         print("Result: ", result1)
         if logReader.args.mean == True:
             print("Mean: %.1f" % findMean(result1))
@@ -386,13 +479,5 @@ if __name__ == '__main__':
         print("Result: ", result2)
     # * =============================
     
-    # * TESTING ======================
-    # calDuration("071221", "063021")
-    # testDictionary = {'120722': 90.0, '050821': 100.0, '060821': 10.0}
-    # sortDict(testDictionary, True)
-    print("\nFinished Running.")
-    # * =============================
-    
-    
 
-
+    
