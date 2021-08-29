@@ -20,24 +20,25 @@ $ python spaceMetrics.py --dir data --uid user1 -desc -median
 # also print out the median
 
 
-TODO ----------------------------------------------------------------
+DONE ----------------------------------------------------------------
 * shell & environmnet & code structure
 * Input user netid → return users space change through out the month 
 * add duration flag → discrete dates to days (resolved in uidQuery)
 * input space number → return user netid with space above + dates 
 * input frequency number → return user netid with frequencies (resolved in spaceQuery)
-! rank user based on their average usage
+* rank user based on their average usage
 * input dates → return stats: mean, median 
-! zoom in - query only specific begin & end dates
+* zoom in - query only specific begin & end dates
 ! plot multiuser on a single img
-? ❗️ add monthly bars 
-? Add more labels/legends to the plot 
-? Example commands on readME
+? add monthly bars 
+? Add more labels/legends to the plot and adjust plot size
+? README
+? testing
 
-===============================================
-# ? more on error handling on input dates sanity check 
+TODO -------------------------------------------------------
+? more on error handling on input dates sanity check 
 ? unifying date vs datetime vs string input format
-# ?Optimize Memory usage + running performance 
+? Optimize Memory usage + running performance 
 
 ? Single user - how many days above certain thresh
 ? single date/ bars on deletion days 
@@ -99,7 +100,9 @@ class LogReader:
         parser.add_argument('-end','--end', default='',
                             help='an ending date in the format of MM/DD/YY')
        
-       
+        parser.add_argument('-o','--out', default='',
+                    help='define the name of output plotted figure')
+
         # parser.add_argument('--desc', default=True,type=str2bool, nargs='?',
         #                     help='output in a descending order?')
         parser.add_argument('-desc','--desc', action='store_true', help='output in a descending order')
@@ -111,6 +114,10 @@ class LogReader:
         self.rankedUserList = {}
         if self.args.dir and self.args.dir[-1] != "/":
             self.args.dir += "/"
+        if self.args.start == "":
+            self.args.start = "01/01/2000"
+        if self.args.end == "":
+            self.args.end = formatDate(date.today())
 
         
     def setArgs(self, arg):
@@ -140,6 +147,7 @@ class LogReader:
         Assuming that data is formatted as "uid allocationNumber spaceOccupied"
         Assuming that one uid would appear in each date once
         :param uid:  string - a user's netID
+        :param printing:  bool - printing the results or not
         :return: 2d list - in the form of[[dates, space],]
         """
         if self.args.start != "" and self.args.end != "":  # check input dates
@@ -162,6 +170,13 @@ class LogReader:
         params = [] # feed in one element from list of params for each thread
         for filename in glob.glob(self.args.dir + self.args.prefix + "*"): #TODO change params format for feeding in
             params.append(filename+" "+self.args.uid+" "+self.args.start+" "+self.args.end)
+        if params == []: 
+            if(self.args.dir == ""):
+                print("ERROR: no matched file within the local directory.")
+            else:
+                print("ERROR: no matched file within the given directory: "+self.args.dir)
+            return
+        
         spaceList = pool.map(uidReadFiles, params)
         spaceList = list(filter(None, spaceList)) # filter out the None values in the list
         if spaceList != []:
@@ -175,10 +190,11 @@ class LogReader:
             return 
 
         
-    def querySpaceAbove(self):
+    def querySpaceAbove(self, printing):
         """
         return all uid above args.spaceThresh
         :param filenamewithId: string - in the form of "filename uid"
+        :param printing:  bool - printing the results or not
         :return: 1d list - matching given uid and dates
         """
         if self.args.start != "" and self.args.end != "":  # check input dates
@@ -193,8 +209,9 @@ class LogReader:
             #     print("ERROR IN DATES 2 - ALL ERROR CATCHED")
             #     return
         try:
-            print("Reading all files under", self.args.dir if self.args.dir else "current directory", ", starting with", self.args.prefix)
-            print("Querying all user id with", self.args.spaceThresh, "GB occupied and above")
+            if printing:
+                print("Reading all files under", self.args.dir if self.args.dir else "current directory", ", starting with", self.args.prefix)
+                print("Querying all user id with", self.args.spaceThresh, "GB occupied and above")
             threshold = float(self.args.spaceThresh)
             if threshold < 0:
                 print("ERROR: please enter a valid space lowerbound number")
@@ -208,14 +225,24 @@ class LogReader:
         params = [] # feed in one element from list of params for each thread
         for filename in glob.glob(self.args.dir + self.args.prefix + "*"): #TODO change params format for feeding in
             params.append(filename+" "+str(self.args.spaceThresh)+" "+self.args.start+" "+self.args.end)
+        if params == []:
+            if(self.args.dir == ""):
+                print("ERROR: no matched file within the local directory.")
+            else:
+                print("ERROR: no matched file within the given directory: "+self.args.dir)
+            return
+        
         spaceList = pool.map(spaceReadFiles, params) 
         spaceList = list(filter(None, spaceList)) # filter out the None values in the list
         if spaceList != []:
             finalDict = sortDict(mergeDict(spaceList), self.args.desc) #return one single dictionary rather than a list
-            userList = printUniqueUserCount(finalDict)
+            userList = findUniqueUserCount(finalDict) #extract the set of unique users
             ranked_result = self.rankUsers(userList)
             self.rankedUserList = ranked_result
-            printDuration(finalDict)
+            if printing:
+                print("Total:", len(userList), "unique users")
+                printDuration(finalDict)
+                print("ranked:", ranked_result)
             return finalDict
         else:
             print("ERROR: no user not found above this thresh. Please run with -h for help.")
@@ -234,9 +261,8 @@ class LogReader:
             uInfo = self.queryUidInfo(False)
             val = findMean(uInfo) #TODO easier change to std
             d[u] = round(val,2)
-        result =  OrderedDict(d).items()
-        print(">> Ranked", result)
-        return dict(result)
+        result = dict(OrderedDict(sorted(d.items(), key = lambda t: t[1], reverse=True)))
+        return result
         
     def readLocalDir(self):
         """
@@ -249,6 +275,7 @@ class LogReader:
             date1 = filename[-6:]
             print(date1)
         print("done reading logs")
+
 
 
 # * =====================================
@@ -305,7 +332,8 @@ def spaceReadFiles(filenameWithThresh):
             continue
     currFile.close()       
     return tmplist
-
+ 
+ 
 # * =====================================
 # * Helper functions
 # * =====================================
@@ -326,14 +354,28 @@ def checkDate(date1):
     for i in date1:
         date_final += i
     return strToDate(date_final) if checkDateBoundary(date_final, "", "") else None
-    
-def printUniqueUserCount(dict):
+   
+def checkDateBoundary(d, lower, upper):
+    '''
+    check if its a valid date period for query
+    '''
+    if lower == "":
+        lower = "010100"
+    if upper == "":
+        upper = date.today()
+    earliest = strToDate(lower)
+    if not isinstance(upper, datetime.date):
+        upper = strToDate(upper).date()
+    latest = upper
+    if (earliest.date() < strToDate(d).date() < latest) or strToDate(d).date() == earliest.date() or strToDate(d).date() == latest:
+        return True
+    return False
+ 
+def findUniqueUserCount(dict):
     '''
     find out unique values in a dict
     '''
     users = set(list(chain.from_iterable(dict.values())))
-    num = len(users)
-    print("Total:", num, "users")
     return users
 
 def printStats(dict):
@@ -394,7 +436,9 @@ def strToDate(date1):
         2000+int(date1[-2:]), int(date1[0:2]), int(date1[2:4]))
 
 def formatDate(d):
-    return d.strftime("%m/%d/%Y")
+    today = d.strftime("%m/%d/%Y")
+    today=today[:-4]+today[-2:]
+    return today
 
 def str2bool(v):
     """
@@ -434,21 +478,7 @@ def getDate(filename):
     date1 = filename[-6:]
     return date1
 
-def checkDateBoundary(d, lower, upper):
-    '''
-    check if its a valid date period for query
-    '''
-    if lower == "":
-        lower = "012621"
-    if upper == "":
-        upper = date.today()
-    earliest = strToDate(lower)
-    if not isinstance(upper, datetime.date):
-        upper = strToDate(upper).date()
-    latest = upper
-    if earliest.date() < strToDate(d).date() < latest:
-        return True
-    return False
+
     
 
 if __name__ == '__main__':
@@ -474,9 +504,9 @@ if __name__ == '__main__':
         if logReader.args.std == True:
             print("Standard Deviation:  %.1f" % findStdev(result1))
             
-    if logReader.args.spaceThresh != "":
-        result2 = logReader.querySpaceAbove()
-        print("Result: ", result2)
+    elif logReader.args.spaceThresh != "":
+        result2 = logReader.querySpaceAbove(True)
+        # print("Result: ", result2)
     # * =============================
     
 

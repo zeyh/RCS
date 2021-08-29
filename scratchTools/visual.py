@@ -9,9 +9,12 @@ A description of each argument that can or must be passed to this script
 (scratchVisual) [zhf3975@quser21 scratch]$ python visual.py --dir ../../artspace_reports/daily/scratch --spaceThresh 10000
 """
 
+import matplotlib as mpl
+mpl.use('Agg')
 from spaceMetrics import *
 import matplotlib.pyplot as plt
 import argparse
+from tqdm import tqdm
 
 def genMonthlyBars(reader):
     start = reader.args.start
@@ -30,37 +33,49 @@ def plotUid(reader):
     plt.plot(result.keys(), result.values())
     print(result.keys())
     plt.vlines('060821',0,100,linestyles='dashed')
-    # plt.legend("Space", "Date")
+    plt.legend("Space", "Date")
     # plt.show()
-    plt.savefig(reader.args.uid+".png")
+    if reader.args.out == "":
+        plt.savefig(reader.args.uid+".png")
+    else:
+        plt.savefig(reader.args.out+".png")
 
 def plotGroups(reader):
     '''
     plotGroups plot number of users whose usage is above some thresh
     '''
-    result = reader.querySpaceAbove()
+    result = reader.querySpaceAbove(True)
     plt.bar(result.keys(),listToFreq(result.values()))
     # plt.show()
-    plt.savefig(str(reader.args.spaceThresh)+".png")
+    if reader.args.out == "":
+        plt.savefig(str(reader.args.spaceThresh)+".png")
+    else:
+        plt.savefig(reader.args.out+"_frequencies"+str(reader.args.spaceThresh)+".png")
 
 def plotMultiUid(reader):
-    reader.querySpaceAbove()
+    reader.querySpaceAbove(False)
     userList = reader.rankedUserList
-    for uid in userList.keys():
+    for uid in tqdm(userList.keys()):
         reader.setUid(uid)
-        result = reader.queryUidInfo(True)
+        result = reader.queryUidInfo(False)
         plt.plot(result.keys(), result.values(), label = uid)
     print("all users waited to be plotted: ", userList)
     plt.legend()
     # plt.show()
     # plt.set_size_inches(18.5, 10.5, forward=True)
-    plt.savefig("multiple_"+changeDateFormat(reader.args.start)+"_"+changeDateFormat(reader.args.end)+".png", dpi=100)
     
+    if reader.args.out == "":
+        plt.savefig("multiple_"+changeDateFormat(reader.args.start)+"_"+changeDateFormat(reader.args.end)+".png", dpi=100)
+    else:
+        plt.savefig(reader.args.out+"_users"+str(reader.args.spaceThresh)+".png")
+        
+        
 def changeDateFormat(date1):
     if("/" in date1):
         dateSplited = date1.split("/")
         date1 = ''.join(str(e) for e in dateSplited) 
     return date1
+    
     
 def listToFreq(values):
     '''
@@ -89,6 +104,8 @@ def addArgs():
                         help='a starting date')
     parser.add_argument('--end', default='08/01/21',
                         help='an ending date')
+    parser.add_argument('-o','--out', default='',
+            help='define the name of output plotted figure')
     
     # parser.add_argument('--desc', default=True,type=str2bool, nargs='?',
     #                     help='output in a descending order?')
@@ -101,7 +118,12 @@ def addArgs():
     args = parser.parse_args()
     if args.dir and args.dir[-1] != "/":
         args.dir += "/"
-        
+    if args.dir and args.dir[-1] != "/":
+        args.dir += "/"
+    if args.start == "":
+        args.start = "01/01/2000"
+    if args.end == "":
+        args.end = formatDate(date.today())    
     return args
 
 
@@ -115,15 +137,11 @@ if __name__ == '__main__':
         plotUid(reader) #save the plot here
 
     if args.spaceThresh != "":
+        print("start ploting frequency bars")
         plotGroups(reader) #save the plot here
-        print("plotted frequency bars")
-
-        plotMultiUid(reader) #plot multiple users
-        print("ploting multiple user IDs")
-
-
-
         
+        print("start ploting multiple user IDs")
+        plotMultiUid(reader) #plot multiple users
 
     print("\nFinished Plotting.")
     
