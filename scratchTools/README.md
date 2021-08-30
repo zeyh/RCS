@@ -43,26 +43,30 @@ conda env create --file env.yml
 #### 2. Usage Report Query 1: All users above certain GB of space occupied
 * **Required**: 
   * ```--dir someDirectory ```
-    * to put the data; otherwise, it will look for data files within the current directory
+    * indicate where the data files are; otherwise, it will look for files within the current directory
   * ```--spaceThresh someInteger ```
     * specify a lower bound of number of GB
 * **Optional:** 
   * ```--start MM/DD/YY and --end MM/DD/YY ```
-    * specify a time range to query the data
+    * specify a time range to query the data (please follow this date format, i.e. 08/31/21)
   * ```--out someString ```
     * specify a name of the output figures
+  * ```--prefix someString ```
+    * specify a common prefix of input data files
 
 ####3. Usage Report Query 2: All data of a given user
 * **Required**: 
   * ```--dir someDirectory ```
-    * to put the data; otherwise, it will look for data files within the current directory
+    * indicate where the data files are; otherwise, it will look for files within the current directory
   * ```--uid someString```
-    * specify the netID of user you would like to query
+    * specify the netID of a user you would like to query
 * **Optional:** 
   * ```--start MM/DD/YY and --end MM/DD/YY ```
-    * specify a time range to query the data
+    * specify a time range to query the data (please follow this date format, i.e. 08/31/21)
   * ```--out someString```
     * specify a name of the output figure
+  * ```--prefix someString ```
+    * specify a common prefix of input data files
 
 ## 🚀 Example Running Commands <a name = "running"></a>
 
@@ -73,16 +77,16 @@ srun --account=XXXXX --time=00:20:00 --partition=buyin --mem=64G  --pty bash -l
 
 2. Active the conda environment
 ```bat
-conda activate scratchVisual
+conda activate scratchVis
 ```
 
 3. Run the script
-* Query all users given the data under directory *<../../..>* exceeding *<10000>* GB of usage between *<05/01/21>* and *<07/01/21>*, and name the output figure starting as *"test1_**.png"*
+* Query all users given the data under directory *<../../..>* exceeding *<10000>* GB of usage between *<05/01/21>* and *<07/01/21>*, and name the output figures starting as *<test1_**.png>*
   ```bat
   python visual.py --dir ../../artspace_reports/daily/scratch --spaceThresh 10000 --start 05/01/21 --end 07/01/21 --out test1
   ```
 
-* Query all data of user with userID *<xx>* given the directory *<../../..>* between *<05/01/21>* and *<07/01/21>*, and name the output figure as *"test1.png"*
+* Query all data of user with userID *<xx>* given the directory *<../../..>* between *<05/01/21>* and *<07/01/21>*, and name the output figure as *<test1.png>*
   ```bat
   python visual.py --dir ../../artspace_reports/daily/scratch --uid XX --start 05/01/21 --end 07/01/21 --out test1
   ```
