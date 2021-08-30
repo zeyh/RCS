@@ -29,11 +29,12 @@ DONE ----------------------------------------------------------------
 * rank user based on their average usage
 * input dates → return stats: mean, median 
 * zoom in - query only specific begin & end dates
-! plot multiuser on a single img
-? add monthly bars 
-? Add more labels/legends to the plot and adjust plot size
-? README
-? testing
+* plot multiuser on a single img
+* add monthly bars 
+? Add more labels/legends to the plot 
+? adjust plot size
+! README
+! testing
 
 TODO -------------------------------------------------------
 ? more on error handling on input dates sanity check 
@@ -118,7 +119,8 @@ class LogReader:
             self.args.start = "01/01/2000"
         if self.args.end == "":
             self.args.end = formatDate(date.today())
-
+        self.earliestDate = self.args.start
+        self.latestDate = self.args.end
         
     def setArgs(self, arg):
         """
@@ -184,6 +186,8 @@ class LogReader:
             if printing:
                 printStats(finalDict)
                 printDuration(finalDict)
+            self.earliestDate = list(finalDict.items())[0][0]
+            self.latestDate = list(finalDict.items())[-1][0]
             return finalDict
         else:
             print("ERROR: netID not found. Please run with -h for help.")
@@ -243,6 +247,8 @@ class LogReader:
                 print("Total:", len(userList), "unique users")
                 printDuration(finalDict)
                 print("ranked:", ranked_result)
+            self.earliestDate = list(finalDict.items())[0][0]
+            self.latestDate = list(finalDict.items())[-1][0]
             return finalDict
         else:
             print("ERROR: no user not found above this thresh. Please run with -h for help.")
