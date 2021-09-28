@@ -131,7 +131,7 @@ def plotMultiUid(reader):
     #get a list of uID
     reader.querySpaceAbove(False)
     userList = reader.rankedUserList
-    print("all users waited to be plotted: ", userList)
+    # print("all users waited to be plotted: ", userList)
     fig, ax = plt.subplots()
 
     #loop through every uid

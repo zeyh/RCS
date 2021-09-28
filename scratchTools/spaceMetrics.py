@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """Scratch Space TBD
-a command line tool for specific data queries e.g userid, space occupied, 
+a command line tool for specific data queries e.g userid, space occupied
 """
 # -----------------------------------------------------------------------------
 # REFERENCES:
@@ -31,8 +31,8 @@ DONE ----------------------------------------------------------------
 * zoom in - query only specific begin & end dates
 * plot multiuser on a single img
 * add monthly bars 
-? Add more labels/legends to the plot 
-? adjust plot size
+* Add more labels/legends to the plot 
+* adjust plot size
 ! README
 ! testing
 
@@ -205,13 +205,6 @@ class LogReader:
             if not checkDate(self.args.start) or not checkDate(self.args.end):
                 print("ERROR IN DATES 1")
                 return
-            # try:
-            #     if not checkDate(self.args.start) or not checkDate(self.args.end):
-            #         print("ERROR IN DATES 1")
-            #         return
-            # except:
-            #     print("ERROR IN DATES 2 - ALL ERROR CATCHED")
-            #     return
         try:
             if printing:
                 print("Reading all files under", self.args.dir if self.args.dir else "current directory", ", starting with", self.args.prefix)
