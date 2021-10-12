@@ -78,12 +78,12 @@ class Logger:
         for entry in tqdm(TFdata):
             counter += 1
             envPath = "--prefix "+self.args.envPath if self.args.envPath != "" else ""
-            pyVer = entry[1].split("-")[-1] #TODO by default the highest python version
+            pyVer = entry[1].split("-")[-1] #TODO by default the highest python version, need for all versions'combination
             envName = self.args.envName+entry[0]+"-py-"+pyVer
             cudnnVer = entry[4]
             currFileName = TESTING_DIR+self.args.shName+entry[0]+"-py-"+pyVer+'.sh'
             
-            if self.args.ow == False: #TODO Testing else statement actually overwrites
+            if self.args.ow == False: 
                 if Path(currFileName).is_file():
                     # print("WARNING: Output name already exists in the current directory, so the name will be added with _fourRandomCharacters.sh")
                     tmpName = currFileName.rpartition('.sh')[0]
@@ -97,7 +97,7 @@ class Logger:
                 module purge all
                 module load python-anaconda3
                 conda create -n {envName} {envPath} -c conda-forge -c anaconda python={pyVer} cudnn={cudnnVer} --yes
-                conda activate {envName}
+                source activate {envName}
                 pip3 install tensorflow
 
                 echo "finished install!"
@@ -142,6 +142,9 @@ class Logger:
             names.append(prefix+filename)
         return names
      
+    def crossSearch_cudnn(self):
+        pass
+    
 if __name__ == '__main__':
     logger = Logger()
     logger.printArgs()
